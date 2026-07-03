@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://calculator-9il.pages.dev/sitemap.xml
