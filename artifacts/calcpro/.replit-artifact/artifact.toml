@@ -19,7 +19,7 @@ run = "pnpm --filter @workspace/calcpro run dev"
 
 [services.production]
 build = [ "pnpm", "--filter", "@workspace/calcpro", "run", "build" ]
-publicDir = "artifacts/calcpro/dist/public"
+publicDir = "artifacts/calcpro/dist"
 serve = "static"
 
 [[services.production.rewrites]]
