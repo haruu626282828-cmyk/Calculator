@@ -1,36 +1,40 @@
-# [Project name]
+# CalcPro
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A premium scientific calculator web app with glassmorphism design, full keyboard support, memory functions, and searchable calculation history.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/calcpro run dev` — run the calculator web app
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React + Vite, Tailwind CSS, Framer Motion (this monorepo uses React + Vite instead of Next.js)
+- No backend/database — CalcPro is a fully client-side app; history and preferences persist in localStorage
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/calcpro/src/lib/calculator-engine.ts` — expression tokenizer/parser/evaluator (no `eval`), plus `formatResult` for display formatting
+- `artifacts/calcpro/src/lib/use-calculator.ts` — main calculator state hook (expression building, memory, execute)
+- `artifacts/calcpro/src/lib/use-history.ts` — localStorage-backed calculation history
+- `artifacts/calcpro/src/lib/use-sound.ts` — optional button/equals/error sound effects
+- `artifacts/calcpro/src/lib/use-keyboard-shortcuts.ts` — global keyboard shortcut wiring
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Calculator logic (parsing/evaluation, history, memory, sound) was built by the main agent as plain hooks/modules; the UI was built by a design subagent that consumes those hooks — keeps business logic testable and separate from presentation.
+- Expressions are parsed with a hand-written recursive-descent parser rather than `eval`, for safety and precise control over scientific notation, postfix operators (`!`, `%`, `²`, `³`, `⁻¹`), and DEG/RAD-aware trig functions.
+- Other artifacts in this workspace (`api-server`, `mockup-sandbox`) are scaffolding not used by CalcPro.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Standard calculator: add, subtract, multiply, divide, percentage, parentheses, decimals
+- Scientific functions: sin/cos/tan and inverses, log, ln, exponentials, powers, roots, factorial, absolute value, constants (π, e), random number, DEG/RAD toggle
+- Memory functions: MC, MR, M+, M-, MS
+- Searchable history with delete, clear-all, copy result, and reuse-expression
+- Dark/light mode, sound toggle, full keyboard shortcuts, responsive glassmorphism UI
 
 ## User preferences
 
